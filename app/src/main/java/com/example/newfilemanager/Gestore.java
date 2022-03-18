@@ -4,6 +4,9 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,6 +37,7 @@ public class Gestore {
 
         return  sb.toString();
     }
+
     public String scriviFile(String nomeFile,Context c ){
         String esito;
         FileOutputStream fileO;
@@ -54,7 +58,7 @@ public class Gestore {
 
     }
 
-    public String leggiRawFile(Context c){
+    public String leggiRawFile(Context c,int id){
         String testo;
         StringBuilder sb = new StringBuilder();
 
@@ -101,7 +105,19 @@ public class Gestore {
         }
         return sb.toString();
     }
+    public Brano leggiRawJson( Context c,int id) {
+        String data = leggiRawFile(c,id);
+        Brano b =null;
+
+        try {
+            JSONObject jo = new JSONObject(data);
+            b =new Brano(jo.getString("titolo"),jo.getString("genere"),jo.getString("autore"),jo.getString("durata"),jo.getString("datapu"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    return b;
+
+    }
 
 }
-
 
